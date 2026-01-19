@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 # YogAI - Intelligent Yoga Assistant
 
@@ -22,3 +23,6 @@ Open frontend/index.html in browser
 
 ## Next Steps
 Integrate Tavily/Bing API for live RAG.
+=======
+# Ask-Me-Anything-About-Yoga
+>>>>>>> e757328c7be68c0140cedfa982b0fab8fef85230
