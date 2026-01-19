@@ -21,6 +21,23 @@ export default function ChatBox({ history, setHistory }) {
     setLoading(false);
   };
 
+  const clearAll = () => {
+    setQuery("");
+    setResponse(null);
+  };
+
+  // Convert answer into point-wise bullets
+  const formatAnswer = (text) => {
+    if (!text) return [];
+
+    // split by numbered points or line breaks
+    return text
+      .replace(/\d+\.\s+/g, "• ")
+      .split("•")
+      .map(p => p.trim())
+      .filter(p => p.length > 0);
+  };
+
   return (
     <div className="max-w-2xl mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
 
@@ -43,14 +60,32 @@ export default function ChatBox({ history, setHistory }) {
           {loading ? "Thinking..." : "Ask YogAI"}
         </button>
 
+        <button
+          onClick={clearAll}
+          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+        >
+          Clear
+        </button>
+
         <VoiceInput setQuery={setQuery} />
       </div>
 
       {response && (
         <div className="mt-6 border-t pt-5">
 
-          <p className="text-slate-500 text-sm mb-1">Answer</p>
-          <p className="text-slate-800 dark:text-white">{response.answer}</p>
+          <p className="text-slate-500 text-sm mb-2">Answer</p>
+
+          {/* Scrollable Answer Box */}
+          <div className="max-h-72 overflow-y-auto bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-2">
+
+            {formatAnswer(response.answer).map((point, idx) => (
+              <div key={idx} className="flex gap-2">
+                <span className="text-indigo-500 font-bold">•</span>
+                <p className="text-slate-800 dark:text-gray-100">{point}</p>
+              </div>
+            ))}
+
+          </div>
 
           <ConfidenceMeter score={response.confidence} />
 
